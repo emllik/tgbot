@@ -237,7 +237,7 @@ class dejson(dict):
         self.update(data)
             
     def __getattr__(self, name):
-        try: value = self[name]
+        try: value = self[name] #self.get(name) ?
         except: return None
         if type(value) == dict:
              return dejson(value)
