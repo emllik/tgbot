@@ -28,7 +28,8 @@ class http_session(object):
         if header[9:12] != b'200':
             raise ValueError(recv)
         leght = int(header.split(b'Content-Length: ')[1].split(b'\r\n')[0])
-        recv += self.sock.recv(leght-len(recv))
+        while len(recv) != length:
+            recv += sock.recv(4096)
         return recv
 
     def post(self, url, data):
