@@ -71,11 +71,12 @@ class bot(object):
     async def deleteMsg(self, chat_id, msg_id):
          url = 'deleteMessage'
          data = { 'chat_id': chat_id, 'message_id': msg_id }
-         return self.session.post(url, data)
+         return await self.session.post(url, data)
          
     async def update(self, timeout=300, get_offset=True):
         url = 'getUpdates'
-        result = await self.session.post(url, { 'timeout': timeout, 'offset': self.offset })
+        data = { 'timeout': timeout, 'offset': self.offset }
+        result = await self.session.post(url, data)
         if result and get_offset:
            self.offset = int(result[-1]['update_id']) + 1
         return result
@@ -237,7 +238,7 @@ class dejson(dict):
         self.update(data)
             
     def __getattr__(self, name):
-        try: value = self[name] #self.get(name) ?
+        try: value = self[name]
         except: return None
         if type(value) == dict:
              return dejson(value)
