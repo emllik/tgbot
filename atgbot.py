@@ -106,8 +106,8 @@ class bot:
               continue
           for type in types.intersection(update[content]):
               if data:
-                  cmd = update[content][type].split()[0].partition('@')[0]
-                  if not cmd in data: continue
+                  lines = update[content][type].split()
+                  if data.isdisjoint(lines): continue
               msg = update.__getattr__(content)
               if func and not func(msg):
                       continue
@@ -325,11 +325,10 @@ class bot:
         data = {'chat_id': chat_id, 'action': action}
         return await self.session.post(method, data)
         
-    async def sendVideo(self, chat_id, data, duration=None, caption=None, reply_to_message_id=None, reply_markup=None,
+    async def sendVideo(self, chat_id, file, duration=None, caption=None, reply_to_message_id=None, reply_markup=None,
                    parse_mode=None, supports_streaming=None, disable_notification=None, timeout=None):
         method = 'sendVideo'
-        data = {'chat_id': chat_id}
-        data['video'] = data
+        data = {'chat_id': chat_id, 'video': file}
         if duration:
             data['duration'] = duration
         if caption:
@@ -348,11 +347,10 @@ class bot:
             data['connect-timeout'] = timeout
         return await self.session.post(method, data)    
     
-    async def sendAnimation(self, chat_id, data, duration=None, caption=None, reply_to_message_id=None, reply_markup=None,
+    async def sendAnimation(self, chat_id, file, duration=None, caption=None, reply_to_message_id=None, reply_markup=None,
                    parse_mode=None, disable_notification=None, timeout=None):
         method = 'sendAnimation'
-        data = {'chat_id': chat_id}
-        data['animation'] = data
+        data = {'chat_id': chat_id, 'animation': file}
         if duration:
             data['duration'] = duration
         if caption:
@@ -390,11 +388,10 @@ class bot:
             data['connect-timeout'] = timeout
         return await self.session.post(method, data)
         
-    async def sendVideoNote(self, chat_id, data, duration=None, length=639, reply_to_message_id=None, reply_markup=None,
+    async def sendVideoNote(self, chat_id, file, duration=None, length=639, reply_to_message_id=None, reply_markup=None,
                         disable_notification=None, timeout=None):
         method = 'sendVideoNote'
-        data = {'chat_id': chat_id}
-        data['video_note'] = data
+        data = {'chat_id': chat_id, 'video_note': file}
         if duration:
             data['duration'] = duration
         if length:
@@ -434,11 +431,10 @@ class bot:
             data['connect-timeout'] = timeout
         return await self.session.post(method, data)
         
-    async def sendSticker(self, chat_id, data, reply_to_message_id=None, reply_markup=None, parse_mode=None,
+    async def sendSticker(self, chat_id, file, reply_to_message_id=None, reply_markup=None, parse_mode=None,
                   disable_notification=None, timeout=None, caption=None):
         method = 'sendSticker'
-        data = {'chat_id': chat_id}
-        data['sticker'] = data
+        data = {'chat_id': chat_id, 'sticker': file}
         if reply_to_message_id:
             data['reply_to_message_id'] = reply_to_message_id
         if reply_markup:
@@ -453,11 +449,10 @@ class bot:
             data['caption'] = caption
         return await self.session.post(method, data)
 
-    async def sendDocument(self, chat_id, data, reply_to_message_id=None, reply_markup=None, parse_mode=None,
+    async def sendDocument(self, chat_id, file, reply_to_message_id=None, reply_markup=None, parse_mode=None,
                   disable_notification=None, timeout=None, caption=None):
         method = 'sendDocument'
-        data = {'chat_id': chat_id}
-        data['document'] = data
+        data = {'chat_id': chat_id, 'document': file}
         if reply_to_message_id:
             data['reply_to_message_id'] = reply_to_message_id
         if reply_markup:
