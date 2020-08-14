@@ -106,8 +106,8 @@ class bot:
               continue
           for type in types.intersection(update[content]):
               if data:
-                  lines = update[content][type].split()
-                  if data.isdisjoint(lines): continue
+                  words = update[content][type].split()
+                  if data.isdisjoint(words): continue
               msg = update.__getattr__(content)
               if func and not func(msg):
                       continue
